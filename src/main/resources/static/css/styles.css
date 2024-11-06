@@ -1,0 +1,8 @@
+img {
+    object-fit: cover;
+}
+
+#header {
+    height: 100vh;
+    object-fit: fill;
+}
