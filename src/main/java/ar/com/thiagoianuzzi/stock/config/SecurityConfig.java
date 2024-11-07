@@ -15,9 +15,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/delete/*", "/edit/*").authenticated()
                         .requestMatchers("/","/*", "/css/*", "/js/*", "/img/*", "/view/*").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
+                .csrf(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
