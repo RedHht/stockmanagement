@@ -42,6 +42,24 @@ public class StockController {
         return "search";
     }
 
+    @PostMapping("/add")
+    public String add(Model model, @ModelAttribute Product product) {
+        productRepository.save(product);
+        return "redirect:/view/"+product.getId();
+    }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        model.addAttribute(new Product());
+        return "add";
+    }
+
+    @PostMapping("/edit")
+    public String edit(Model model, @ModelAttribute Product product) {
+        productRepository.save(product);
+        return "redirect:/view/"+product.getId();
+    }
+
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable Long id) {
         Product producto = productRepository.findById(id);

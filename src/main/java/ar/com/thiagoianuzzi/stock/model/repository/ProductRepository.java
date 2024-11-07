@@ -9,4 +9,5 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
     List<Product> findByNameContainingIgnoreCase(String words);
     Product findById(Long id);
     void deleteById(Long id);
+    Product save(Product product);
 }
