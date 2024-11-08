@@ -2,19 +2,21 @@ package ar.com.thiagoianuzzi.stock.controller;
 
 import ar.com.thiagoianuzzi.stock.model.entity.Product;
 import ar.com.thiagoianuzzi.stock.model.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
 public class StockController {
-    @Autowired
-    ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
+
+    StockController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -43,7 +45,7 @@ public class StockController {
     }
 
     @PostMapping("/add")
-    public String add(Model model, @ModelAttribute Product product) {
+    public String add(@ModelAttribute Product product) {
         productRepository.save(product);
         return "redirect:/view/"+product.getId();
     }
@@ -55,7 +57,7 @@ public class StockController {
     }
 
     @PostMapping("/edit")
-    public String edit(Model model, @ModelAttribute Product product) {
+    public String edit(@ModelAttribute Product product) {
         productRepository.save(product);
         return "redirect:/view/"+product.getId();
     }
@@ -75,7 +77,7 @@ public class StockController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable Long id) {
+    public String delete(@PathVariable Long id) {
         productRepository.deleteById(id);
         return "redirect:/1";
     }
