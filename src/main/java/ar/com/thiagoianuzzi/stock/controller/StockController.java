@@ -3,11 +3,14 @@ package ar.com.thiagoianuzzi.stock.controller;
 import ar.com.thiagoianuzzi.stock.model.entity.Product;
 import ar.com.thiagoianuzzi.stock.model.repository.ProductRepository;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class StockController {
@@ -36,7 +39,7 @@ public class StockController {
     }
 
     @RequestMapping("/search")
-    public String search(Model model, @RequestParam(name = "query", required = false) String query) {
+    public String search(Model model, @RequestParam(name = "query") String query) {
         model.addAttribute("paginaActual", "stock");
         List<Product> pageable =productRepository.findByNameContainingIgnoreCase(query);
 
@@ -64,21 +67,36 @@ public class StockController {
 
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable Long id) {
-        Product producto = productRepository.findById(id);
-        model.addAttribute(producto);
+        Optional<Product> producto = productRepository.findById(id);
+
+        if (producto.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Producto inexistente");
+        }
+
+        model.addAttribute(producto.get());
         return "edit";
     }
 
     @GetMapping("/view/{id}")
     public String view(Model model, @PathVariable Long id) {
-        Product producto = productRepository.findById(id);
-        model.addAttribute(producto);
+        Optional<Product> producto = productRepository.findById(id);
+
+        if (producto.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Producto inexistente");
+        }
+
+        model.addAttribute(producto.get());
         return "view";
     }
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public String delete(@RequestParam(name = "id") Long id) {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Producto inexistente");
+        }
+
         productRepository.deleteById(id);
+
         return "redirect:/1";
     }
 }

@@ -15,7 +15,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/delete/*", "/edit/*", "/add").authenticated()
+                        .requestMatchers("/delete", "/edit/*", "/add").authenticated()
                         .requestMatchers("/","/*", "/css/*", "/js/*", "/img/*", "/view/*").permitAll()
                         .anyRequest().authenticated())
                 .csrf(Customizer.withDefaults())

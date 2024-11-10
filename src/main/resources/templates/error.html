@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>¡Error!</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body style="height: 100vh">
+  <div th:replace="~{element/navbar}"></div>
+  <div class="container d-flex justify-content-center align-content-center flex-column">
+    <h1>Parece que algo salió mal...</h1>
+    <h2>Código de error: <span th:text="${code}"></span></h2>
+  </div>
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
